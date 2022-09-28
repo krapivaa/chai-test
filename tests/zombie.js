@@ -35,13 +35,35 @@ describe('Functional Tests with Zombie.js', function () {
             });
         })
         it('should not create a person record without an age', function (done) {
-            done()
+            browser.fill('name', 'Ann').then(() => {
+                browser.fill('age', '').then(() => {
+                    browser.pressButton('#addPerson', () => {
+                        setTimeout(function () {
+                            assert.include(browser.text('#result'), 'Please enter an age.')
+                            done();
+                        }, 100)
+                    });
+                });
+            });
         })
         it('should return the entries just created', function (done) {
-            done()
+            browser.pressButton('#listPeople', () => {
+                setTimeout(function () {
+                    assert.include(browser.text("#result"), "John")
+                    done();
+                }, 100)
+            })
         })
         it('should return an entry of index 1', function (done) {
-            done()
+            browser.fill('index', 1).then(() => {
+                browser.pressButton("#getPerson", ()=>{
+                    setTimeout(function () {
+                        assert.include(browser.text("#result"), "John")
+                        done();
+                    }, 100)
+                })
+            })
         })
     });
 });
+
